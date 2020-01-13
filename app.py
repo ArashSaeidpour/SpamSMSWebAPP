@@ -58,8 +58,7 @@ def train(document, y):
 def sqlite_entry(path, document, y):
     conn = sqlite3.connect(path)
     c = conn.cursor()
-    c.execute("INSERT INTO review_db (review, sentiment, date)"\
-    " VALUES (?, ?, DATETIME('now'))", (document, y))
+    c.execute(f"INSERT INTO spam_db (message, label, date) VALUES ({document},{y}, DATETIME('now'))")
     conn.commit()
     conn.close()
 
@@ -71,24 +70,24 @@ app = Flask(__name__)
 
 
 
-class smsForm(Form):
-    smstext = TextAreaField('',
-                                [validators.DataRequired(),
-                                validators.length(min=5)])
+# class smsForm(Form):
+#     smstext = TextAreaField('',
+#                                 [validators.DataRequired(),
+#                                 validators.length(min=5)])
 
-@app.route('/')
-def index():
-    form = smsForm(request.form)
-    return render_template('smsform.html', form=form)
+# @app.route('/')
+# def index():
+#     form = smsForm(request.form)
+#     return render_template('smsform.html', form=form)
 
 
 
 
 @app.route('/results', methods=['POST'])
 def results():
-    form = smsForm(request.form)
-    if request.method == 'POST' and form.validate():
-        sms = request.form['smstext']
+    #form = smsForm(request.form)
+    if request.method == 'POST':  # and form.validate():
+        ut = request.form['usertext']
         y, proba = classify(sms)
         return render_template('results.html',
                                 content=sms,

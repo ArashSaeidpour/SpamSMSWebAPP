@@ -8,15 +8,11 @@
 
 <h2>Please enter your text message:</h2>
 
-{% from "_formhelpers.html" import render_field %}
+
 
 <form method=post action="/results">
-  <dl>
-	{{ render_field(form.smstext, cols='30', rows='10') }}
-  </dl>
-  <div>
-	  <input type=submit value='Submit sms' name='submit_btn'>
-  </div>
+    <input type="text" name="usertext">
+	<input type=submit value='check!' name='submit_btn'>
 </form>
 
   </body>
